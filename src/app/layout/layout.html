@@ -1,0 +1,33 @@
+<div class="min-h-screen bg-gray-950 text-white flex flex-col">
+
+  <nav class="bg-gray-900 px-6 py-4 flex gap-6 items-center shadow-lg">
+    <span class="text-indigo-400 font-bold text-xl mr-4">🎬 MovieApp</span>
+
+    <button
+      [routerLink]="['/home']"
+      routerLinkActive="active-link"
+      class="hover:text-indigo-300 transition-colors duration-200">
+      Inicio
+    </button>
+
+    <button
+      [routerLink]="['/movies']"
+      routerLinkActive="active-link"
+      class="hover:text-indigo-300 transition-colors duration-200">
+      Películas
+    </button>
+  </nav>
+
+  <main class="flex-1">
+    <router-outlet />
+  </main>
+
+  <footer class="bg-gray-900 text-gray-500 text-center py-4 text-sm">
+    MovieApp © 2026 — Datos proporcionados por
+    <span class="text-indigo-400 cursor-pointer hover:underline"
+      onclick="window.open('https://www.themoviedb.org', '_blank')">
+      TMDB
+    </span>
+  </footer>
+
+</div>
