@@ -1,4 +1,69 @@
-<div class="p-8">
-  <h1 class="text-4xl font-bold text-indigo-400 mb-6">Detalle de Película</h1>
-  <p class="text-gray-400">Aquí aparecerán los detalles de la película seleccionada.</p>
+<div class="p-8 max-w-5xl mx-auto">
+
+  @if (loading()) {
+    <div class="flex justify-center items-center h-64">
+      <p class="text-gray-400 text-xl animate-pulse">Cargando película...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="text-center mt-12">
+      <p class="text-red-400 text-xl mb-6">{{ error() }}</p>
+      <button
+        (click)="goBack()"
+        class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg">
+        Volver al listado
+      </button>
+    </div>
+  }
+
+  @if (!loading() && !error() && movie()) {
+    <div class="flex flex-col md:flex-row gap-8">
+
+      <img
+        [src]="getPosterUrl(movie()!.poster_path)"
+        [alt]="movie()!.title"
+        class="w-full md:w-72 h-auto rounded-xl shadow-lg object-cover"
+      />
+
+      <div class="flex flex-col gap-4">
+
+        <h1 class="text-4xl font-bold text-indigo-400">
+          {{ movie()!.title }}
+        </h1>
+
+        @if (movie()!.tagline) {
+          <p class="text-gray-400 italic text-lg">
+            "{{ movie()!.tagline }}"
+          </p>
+        }
+
+        <div class="flex flex-wrap gap-2">
+          @for (genre of movie()!.genres; track genre.id) {
+            <span class="bg-indigo-900 text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full">
+              {{ genre.name }}
+            </span>
+          }
+        </div>
+
+        <div class="flex gap-6 text-sm text-gray-400">
+          <p>📅 {{ movie()!.release_date | slice:0:4 }}</p>
+          <p>⏱ {{ movie()!.runtime }} min</p>
+          <p>⭐ {{ movie()!.vote_average | number:'1.1-1' }}</p>
+        </div>
+
+        <p class="text-gray-300 leading-relaxed">
+          {{ movie()!.overview }}
+        </p>
+
+        <button
+          (click)="goBack()"
+          class="mt-4 w-fit bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200">
+          ← Volver al listado
+        </button>
+
+      </div>
+    </div>
+  }
+
 </div>

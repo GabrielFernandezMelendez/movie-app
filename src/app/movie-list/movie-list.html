@@ -1,4 +1,42 @@
 <div class="p-8">
-  <h1 class="text-4xl font-bold text-indigo-400 mb-6">Películas Populares</h1>
-  <p class="text-gray-400">Aquí aparecerá el listado de películas de TMDB.</p>
+  <h1 class="text-4xl font-bold text-indigo-400 mb-8">🎬 Películas Populares</h1>
+
+  @if (loading()) {
+    <div class="flex justify-center items-center h-64">
+      <p class="text-gray-400 text-xl animate-pulse">Cargando películas...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="text-red-400 text-center text-xl mt-12">
+      {{ error() }}
+    </div>
+  }
+
+  @if (!loading() && !error()) {
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      @for (movie of movies(); track movie.id) {
+        <div
+          [routerLink]="['/movies', movie.id]"
+          class="bg-gray-800 rounded-xl overflow-hidden shadow-lg cursor-pointer hover:scale-105 hover:shadow-indigo-500/30 transition-all duration-300">
+
+          <img
+            [src]="getPosterUrl(movie.poster_path)"
+            [alt]="movie.title"
+            class="w-full h-72 object-cover"
+          />
+
+          <div class="p-3">
+            <p class="text-white font-semibold text-sm truncate">{{ movie.title }}</p>
+            <p class="text-gray-400 text-xs mt-1">{{ movie.release_date | slice:0:4 }}</p>
+            <div class="flex items-center gap-1 mt-2">
+              <span class="text-yellow-400 text-xs">⭐</span>
+              <span class="text-gray-300 text-xs">{{ movie.vote_average | number:'1.1-1' }}</span>
+            </div>
+          </div>
+
+        </div>
+      }
+    </div>
+  }
 </div>

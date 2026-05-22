@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Movie, MovieDetail } from './interfaces/movie.interface';
 import { Observable } from 'rxjs';
@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MoviesService {
+  private http = inject(HttpClient);
+
   private baseUrl = 'https://api.themoviedb.org/3';
   private imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
   private token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZDJkODVlOTgyMzMxNDFkNGFmNGEyNWVkNjJjNDMxZiIsIm5iZiI6MTc3OTQzNDc3NS40MzI5OTk4LCJzdWIiOiI2YTEwMDUxNzEyN2QxYmJkMjJhMzA5NTYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.KKtE1YVh6vVEW8D8gMxKjx9zWbR3PWW1TBngoJdFokc';
@@ -15,8 +17,6 @@ export class MoviesService {
     Authorization: `Bearer ${this.token}`,
     'Content-Type': 'application/json'
   };
-
-  constructor(private http: HttpClient) {}
 
   getPopularMovies(): Observable<{ results: Movie[] }> {
     return this.http.get<{ results: Movie[] }>(
@@ -33,6 +33,8 @@ export class MoviesService {
   }
 
   getPosterUrl(path: string): string {
-    return path ? `${this.imageBaseUrl}${path}` : 'https://via.placeholder.com/500x750?text=Sin+Poster';
+    return path
+      ? `${this.imageBaseUrl}${path}`
+      : 'https://via.placeholder.com/500x750?text=Sin+Poster';
   }
 }
